@@ -12,8 +12,8 @@ namespace DTOS_BuissnesLogic.InterFaces
     {
         Task<viewModelForBook> AddNewBook(viewModelForBook Model);
         Task<Book> GetBookById(int BookId);
-        Task<IEnumerable<Book>> GetAllBooks();
-        Task<Book> UpdateBookById(int BookId,Book Model);
+        Task<List<viewModelForBook>> GetAllBooks();
+        Task<viewModelForBook> UpdateBookById(int BookId, viewModelForBook Model);
         Task<bool> DeleteBookById(int BookId);
 
     }

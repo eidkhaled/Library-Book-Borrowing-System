@@ -43,23 +43,27 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         }
         
-        public async Task<IEnumerable<Book>> GetAllBooks()
+        public async Task<List<viewModelForBook>> GetAllBooks()
         {
-            var Books=await _dbContext.Books.ToListAsync();
+            
+            var Books = await _dbContext.Books.
+                Select(a => new viewModelForBook {BookID=a.BookID,  Title=a.Title, Description = a.Description, ISBN = a.ISBN , PublicationYear=a.PublicationYear }).
+                ToListAsync();
+            
             return Books;
         }
         
-        public async Task<Book> UpdateBookById(int BookId, Book Model)
+        public async Task<viewModelForBook> UpdateBookById(int BookId, viewModelForBook Model)
         {
             var book=  _dbContext.Books.FirstOrDefault(b=>b.BookID==BookId);
             book.ISBN=Model.ISBN;
-            book.Author=Model.Author;
+            
             book.Description=Model.Description;
             book.Title=Model.Title;
-            book.CategoryId=Model.CategoryId;
-            _dbContext.Books.Update(book);
+            book.CategoryId=Model.CategoryID;
+             _dbContext.Books.Update(book);
             await _dbContext.SaveChangesAsync();
-            return book;
+            return Model;
         }
 
         public async Task<bool> DeleteBookById(int BookId)

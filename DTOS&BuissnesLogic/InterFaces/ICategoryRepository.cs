@@ -1,4 +1,5 @@
 ﻿using DataBase;
+using DTOS_BuissnesLogic.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace DTOS_BuissnesLogic.InterFaces
 {
     public interface ICategoryRepository
     {
-        Task<Category> AddNewCategory(Category Model);
-        Task<Category> GetCategoryById(int CategoryId);
-        Task<IEnumerable<Category>> GetAllCategories();
-        Task<Category> UpdateCategoryById(int CategoryId, Category Model);
+        Task<ViewModelForCategory> AddNewCategory(ViewModelForCategory Model);
+        Task<ViewModelForCategory> GetCategoryById(int CategoryId);
+        Task<IEnumerable<ViewModelForCategory>> GetAllCategories();
+        Task<ViewModelForCategory> UpdateCategoryById(int CategoryId, ViewModelForCategory Model);
         Task<bool> DeleteCategoryById(int CategoryId);
     }
 }

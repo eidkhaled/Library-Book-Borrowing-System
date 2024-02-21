@@ -1,4 +1,5 @@
 ﻿using DataBase;
+using DTOS_BuissnesLogic.DTOs;
 using DTOS_BuissnesLogic.InterFaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,10 +18,16 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             _dbContext = dbContext;
         }
 
-        public async Task<Category> AddNewCategory(Category Model)
+        public async Task<ViewModelForCategory> AddNewCategory(ViewModelForCategory Model)
         {
             if (Model == null) return null;
-            await _dbContext.Categories.AddAsync(Model);
+            Category category = new Category()
+            {
+                CategoryId = Model.CategoryId,
+                CategoryName = Model.CategoryName,
+                ParentCategory = Model.ParentCategory
+            };
+            await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
             return Model;
         }
@@ -39,20 +46,30 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             return false;
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategories()
+        public async Task<IEnumerable<ViewModelForCategory>> GetAllCategories()
         {
-            var category = await _dbContext.Categories.ToListAsync();
+            var category = await _dbContext.Categories.Select(a=>new ViewModelForCategory
+            {
+                ParentCategory = a.ParentCategory,
+                CategoryName = a.CategoryName,
+                CategoryId = a.CategoryId
+            }).ToListAsync();
             return category;
         }
 
-        public async Task<Category> GetCategoryById(int CategoryId)
+        public async Task<ViewModelForCategory> GetCategoryById(int CategoryId)
         {
-            var category = _dbContext.Categories.FirstOrDefault(b => b.CategoryId == CategoryId);
+            var category = _dbContext.Categories.Select(a => new ViewModelForCategory
+            {
+                ParentCategory = a.ParentCategory,
+                CategoryName = a.CategoryName,
+                CategoryId = a.CategoryId
+            }).FirstOrDefault(b => b.CategoryId == CategoryId);
             if (category != null) { return category; }
             return null;
         }
 
-        public async Task<Category> UpdateCategoryById(int CategoryId, Category Model)
+        public async Task<ViewModelForCategory> UpdateCategoryById(int CategoryId, ViewModelForCategory Model)
         {
             var category = _dbContext.Categories.FirstOrDefault(b => b.CategoryId == CategoryId);
             if (category != null) {
@@ -61,7 +78,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 category.ParentCategory = Model.ParentCategory;
                   _dbContext.Categories.Update(category);
                  _dbContext.SaveChanges();
-                return category;
+                return Model;
                     
                     
                     
