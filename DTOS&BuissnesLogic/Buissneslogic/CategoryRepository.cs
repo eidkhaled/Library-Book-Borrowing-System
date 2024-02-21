@@ -29,6 +29,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             };
             await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
+            Model.CategoryId=category.CategoryId;
             return Model;
         }
 
@@ -48,13 +49,13 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<IEnumerable<ViewModelForCategory>> GetAllCategories()
         {
-            var category = await _dbContext.Categories.Select(a=>new ViewModelForCategory
+            var category = await _dbContext.Categories.Select(a => new ViewModelForCategory
             {
                 ParentCategory = a.ParentCategory,
                 CategoryName = a.CategoryName,
                 CategoryId = a.CategoryId
             }).ToListAsync();
-            return category;
+                return category; 
         }
 
         public async Task<ViewModelForCategory> GetCategoryById(int CategoryId)
@@ -79,11 +80,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                   _dbContext.Categories.Update(category);
                  _dbContext.SaveChanges();
                 return Model;
-                    
-                    
-                    
-                    
-                    
+          
                     }
             return null;
         }

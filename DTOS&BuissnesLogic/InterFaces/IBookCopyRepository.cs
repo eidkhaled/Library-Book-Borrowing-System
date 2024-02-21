@@ -1,4 +1,5 @@
 ﻿using DataBase;
+using DTOS_BuissnesLogic.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DTOS_BuissnesLogic.InterFaces
 {
     public interface IBookCopyRepository
     {
-        Task<BookCopy> AddNewBookCopy(BookCopy Model);
+        Task<ViewModelForCopiesForAdd> AddNewBookCopy(ViewModelForCopiesForAdd Model);
         Task<BookCopy> GetBookCopyById(int BookId);
         Task<IEnumerable<BookCopy>> GetAllBooksCopy();
         //Grouping for id => nOf Copies

@@ -1,4 +1,5 @@
 ﻿using DataBase;
+using DTOS_BuissnesLogic.DTOs;
 using DTOS_BuissnesLogic.InterFaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,11 +19,20 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         }
 
         
-        public async Task<BookCopy> AddNewBookCopy(BookCopy Model)
+        public async Task<ViewModelForCopiesForAdd> AddNewBookCopy(ViewModelForCopiesForAdd Model)
         {
             if (Model == null) return null;
-            await _dbContext.BookCopies.AddAsync(Model);
+            BookCopy bookCopy = new BookCopy()
+            {
+                BookID=Model.BookID,
+                NumberOfCopies=Model.NumberOfCopies,
+                
+            };
+            await _dbContext.BookCopies.AddAsync(bookCopy);
             await _dbContext.SaveChangesAsync();
+            
+            
+
             return Model;
         }
 
@@ -42,7 +52,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<IEnumerable<BookCopy>> GetAllBooksCopy()
         {
-            var Copies = await _dbContext.BookCopies.ToListAsync();
+            var Copies = await _dbContext.BookCopies.Include(a=>a.Book).ToListAsync();
             return Copies;
         }
 

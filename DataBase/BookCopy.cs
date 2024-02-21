@@ -12,8 +12,8 @@ namespace DataBase
     {
         [Key]
         public int CopyId { get; set; }
-        public int BookID { get; set; }
-        public Book Book { get; set; }
+        public int? BookID { get; set; }
+        public Book? Book { get; set; }
         public int NumberOfCopies {  get; set; }
         public string Status { get; set; }=StatusAvailable.Available.ToString();
 
