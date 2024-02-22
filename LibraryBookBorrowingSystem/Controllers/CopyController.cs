@@ -43,32 +43,29 @@ namespace LibraryBookBorrowingSystem.Controllers
             return Ok(Copy);
 
         }
-        //[HttpPut]
-        //public async Task<ActionResult<viewModelForBook>> UpdateBook(int BookId, viewModelForBook viewModelForBook)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var EditedBook = await _bookRepository.UpdateBookById(BookId, viewModelForBook);
-        //        return Ok(EditedBook);
+        [HttpPut("{CopyId}")]
+        public async Task<ActionResult<ViewModelForCopiesForAdd>> UpdateBook(int CopyId, ViewModelForCopiesForAdd viewModelForCopy)
+        {
+            if (ModelState.IsValid)
+            {
+                var EditedCopy = await _bookCopyRepository.UpdateBookCopyiesById(CopyId, viewModelForCopy);
+                return Ok(EditedCopy);
 
-        //    }
-        //    else
-        //    {
-        //        return
-        //            BadRequest("Can,t update");
-        //    }
+            }
+            else
+            {
+                return
+                    BadRequest("Can,t update");
+            }
+        }
+        [HttpDelete("{CopyId}")]
+        public async Task<ActionResult<bool>> DeleteCoby(int CopyId)
+        {
+            var Check = await _bookCopyRepository.DeleteBookCopiesById(CopyId);
+            if (Check)
+                return Ok("Deleted Successfuly");
+            return BadRequest("can,t Delete");
 
-
-
-        //}
-        //[HttpDelete("{BookId}")]
-        //public async Task<ActionResult<bool>> DeleteBook(int BookId)
-        //{
-        //    var Check = await _bookRepository.DeleteBookById(BookId);
-        //    if (Check)
-        //        return Ok("Deleted Successfuly");
-        //    return BadRequest("can,t Delete");
-
-        //}
+        }
     }
-    }
+}

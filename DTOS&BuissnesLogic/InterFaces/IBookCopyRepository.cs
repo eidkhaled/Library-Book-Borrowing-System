@@ -14,7 +14,7 @@ namespace DTOS_BuissnesLogic.InterFaces
         Task<BookCopy> GetBookCopyById(int BookId);
         Task<IEnumerable<BookCopy>> GetAllBooksCopy();
         //Grouping for id => nOf Copies
-        Task<BookCopy> UpdateBookCopyiesById(int BookId, BookCopy Model);
+        Task<BookCopy> UpdateBookCopyiesById(int CopyId, ViewModelForCopiesForAdd Model);
         Task<bool> DeleteBookCopiesById(int BookId);
     }
 }

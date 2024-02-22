@@ -26,8 +26,13 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             {
                 BookID=Model.BookID,
                 NumberOfCopies=Model.NumberOfCopies,
+               
                 
             };
+            if (bookCopy.NumberOfCopies == 0)
+            {
+                bookCopy.Status=StatusAvailable.NotAvailable.ToString();
+            }
             await _dbContext.BookCopies.AddAsync(bookCopy);
             await _dbContext.SaveChangesAsync();
             
@@ -65,7 +70,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         }
 
         
-        public async Task<BookCopy> UpdateBookCopyiesById(int CopyId, BookCopy Model)
+        public async Task<BookCopy> UpdateBookCopyiesById(int CopyId, ViewModelForCopiesForAdd Model)
         {
             var BookCopy = _dbContext.BookCopies.FirstOrDefault(b => b.CopyId == CopyId);
             if (BookCopy != null)

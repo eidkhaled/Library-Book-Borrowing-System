@@ -25,7 +25,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             {
                 CategoryId = Model.CategoryId,
                 CategoryName = Model.CategoryName,
-                ParentCategory = Model.ParentCategory
+                ParentCategoryId = Model.ParentCategory
             };
             await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
@@ -51,9 +51,10 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         {
             var category = await _dbContext.Categories.Select(a => new ViewModelForCategory
             {
-                ParentCategory = a.ParentCategory,
+                
                 CategoryName = a.CategoryName,
-                CategoryId = a.CategoryId
+                CategoryId = a.CategoryId,
+                
             }).ToListAsync();
                 return category; 
         }
@@ -62,7 +63,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         {
             var category = _dbContext.Categories.Select(a => new ViewModelForCategory
             {
-                ParentCategory = a.ParentCategory,
+                ParentCategory = a.ParentCategoryId,
                 CategoryName = a.CategoryName,
                 CategoryId = a.CategoryId
             }).FirstOrDefault(b => b.CategoryId == CategoryId);
@@ -76,7 +77,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             if (category != null) {
 
                 category.CategoryName = Model.CategoryName;
-                category.ParentCategory = Model.ParentCategory;
+                category.ParentCategoryId = Model.ParentCategory;
                   _dbContext.Categories.Update(category);
                  _dbContext.SaveChanges();
                 return Model;
