@@ -51,7 +51,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             var category = await _dbContext.Categories.Select(a => new ViewModelForCategory
             {
                 CategoryName = a.CategoryName,
-                CategoryId = a.CategoryId
+                CategoryId = a.CategoryId,
+                
             }).ToListAsync();
                 return category; 
         }
