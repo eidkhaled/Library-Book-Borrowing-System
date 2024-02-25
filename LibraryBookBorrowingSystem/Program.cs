@@ -33,6 +33,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IBookCopyRepository, CopyRepository>();
+builder.Services.AddScoped<IBorrowingRecordsRepository, BorrowRecordsRepository>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>

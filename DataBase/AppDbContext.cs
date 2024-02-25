@@ -16,6 +16,7 @@ namespace DataBase
         {
             modelBuilder.Entity<BookAuthor>()
             .HasKey(nameof(BookAuthor.AuthorId), nameof(BookAuthor.BookId));
+            
         }
 
         public DbSet<Book> Books{ get; set; }
