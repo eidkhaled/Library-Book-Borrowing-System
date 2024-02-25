@@ -8,23 +8,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCors(
-        //    c =>
-        //{
-        //    c.AddPolicy("AllowOrigin", options =>
-        //    {
-        //        options.AllowAnyOrigin()
-        //        ; options.AllowAnyHeader();
-        //    });
-        //    c.AddPolicy(name: "MyPolicy",
-        //       policy =>
-        //       {
-        //           //WithOrigins("https://localhost:4200"
-        //           //                   )
-        //           policy.AllowAnyOrigin()
-        //                   .WithMethods("PUT", "POST", "DELETE", "GET", "OPTIONS").AllowAnyHeader().WithHeaders("Authorization");
-        //           ;
-        //       });
-        //}
+            c =>
+        {
+            c.AddPolicy("AllowOrigin", options =>
+            {
+                options.AllowAnyOrigin()
+                ; options.AllowAnyHeader();
+            });
+            c.AddPolicy(name: "MyPolicy",
+               policy =>
+               {
+                   policy.WithOrigins("https://localhost:4200"
+                                      );
+                   policy.AllowAnyOrigin()
+                           .WithMethods("PUT", "POST", "DELETE", "GET", "OPTIONS").AllowAnyHeader().WithHeaders("Authorization");
+                   ;
+               });
+        }
         );
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
