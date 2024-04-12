@@ -16,6 +16,7 @@ namespace DTOS_BuissnesLogic.DTOs
         [Required]
         public string ISBN { get; set; } = "";
         public int? CategoryID { get; set; }
+        public string CategoryName { get; set; }
         public DateTime PublicationYear { get; set; }
     }
 }

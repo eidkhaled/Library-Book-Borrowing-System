@@ -47,7 +47,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         {
             
             var Books = await _dbContext.Books.
-                Select(a => new viewModelForBook {BookID=a.BookID,  Title=a.Title, Description = a.Description, ISBN = a.ISBN , PublicationYear=a.PublicationYear }).
+                Select(a => new viewModelForBook {BookID=a.BookID,CategoryID=a.CategoryId,CategoryName= a.Category != null ? a.Category.CategoryName : null, Title =a.Title, Description = a.Description, ISBN = a.ISBN , PublicationYear=a.PublicationYear }).
                 ToListAsync();
             
             return Books;
