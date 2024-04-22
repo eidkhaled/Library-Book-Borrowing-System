@@ -29,7 +29,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 Description = Model.Description,
                 ISBN = Model.ISBN,
                 Title = Model.Title,
-                PublicationYear = Model.PublicationYear
+                PublicationYear = Model.PublicationYear.Value
                 
             };
               _dbContext.Books.AddAsync(book);
