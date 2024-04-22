@@ -67,8 +67,8 @@ namespace LibraryBookBorrowingSystem.Controllers
         {
             var Check = await _bookRepository.DeleteBookById(BookId);
             if(Check)
-            return Ok("Deleted Successfuly");
-            return BadRequest("can,t Delete");
+            return Ok(true);
+            return Ok(false);
 
         }
 
