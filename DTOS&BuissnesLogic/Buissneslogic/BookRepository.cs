@@ -30,10 +30,13 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 ISBN = Model.ISBN,
                 Title = Model.Title,
                 PublicationYear = Model.PublicationYear.Value
+                ,CategoryId=Model.CategoryID
                 
             };
               _dbContext.Books.AddAsync(book);
              await _dbContext.SaveChangesAsync();
+            Model.BookID = book.BookID;
+            Model.CategoryName = book.Category?.CategoryName;
             return Model;
        }    
         public async Task<Book?> GetBookById(int BookId)
