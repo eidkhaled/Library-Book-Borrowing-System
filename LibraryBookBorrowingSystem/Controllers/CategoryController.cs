@@ -44,11 +44,11 @@ namespace LibraryBookBorrowingSystem.Controllers
 
         }
         [HttpPut]
-        public async Task<ActionResult<ViewModelForCategory>> UpdateBook(int BookId, ViewModelForCategory ViewModelForCategory)
+        public async Task<ActionResult<ViewModelForCategory>> UpdateBook(int CategoryId, ViewModelForCategory ViewModelForCategory)
         {
             if (ModelState.IsValid)
             {
-                var EditedCategory = await _categoryRepository.UpdateCategoryById(BookId, ViewModelForCategory);
+                var EditedCategory = await _categoryRepository.UpdateCategoryById(CategoryId, ViewModelForCategory);
                 return Ok(EditedCategory);
 
             }
