@@ -17,7 +17,6 @@ namespace DTOS_BuissnesLogic.DTOs
         public string ISBN { get; set; } = "";
         public int? CategoryID { get; set; }
         public int? TotalCopies { get; set; }
-
         public string CategoryName { get; set; }
         public DateTime? PublicationYear { get; set; }
     }
