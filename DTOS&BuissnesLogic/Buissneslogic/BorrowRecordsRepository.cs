@@ -67,6 +67,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 {
                     BorrowId = a.BorrowId,
                     bookCopyId = a.bookId,
+                    borrowerAddress = a.borrowerAddress,
+                    borrowerName = a.borrowerName,
+                    phoneNumber = a.phoneNumber,
                     BorrowDate = a.BorrowDate,
                     ReturnDate = a.ReturnDate
                 }).ToListAsync();
@@ -78,7 +81,10 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         {
             var BorrowingRecord = _dbContext.BorrowingRecords.Select(a=>new ViewModelForBorrowWithId
             {BorrowId=a.BorrowId, bookCopyId = a.bookId, BorrowDate = a.BorrowDate,
-                 ReturnDate = a.ReturnDate }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
+                borrowerAddress = a.borrowerAddress,
+                borrowerName = a.borrowerName,
+                phoneNumber = a.phoneNumber,
+                ReturnDate = a.ReturnDate }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
             if (BorrowingRecord != null) { return BorrowingRecord; }
             return null;
         }
@@ -101,6 +107,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
             BorrowingRecord.BorrowDate=Model.BorrowDate;
             BorrowingRecord.ReturnDate=Model.ReturnDate;
+            BorrowingRecord.borrowerAddress = Model.borrowerAddress;
+            BorrowingRecord.borrowerName = Model.borrowerName;
+            BorrowingRecord.phoneNumber = Model.phoneNumber;
             BorrowingRecord.bookId =Model.bookCopyId; 
             _dbContext.BorrowingRecords.Update(BorrowingRecord);
             _dbContext.SaveChanges();
@@ -108,6 +117,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             {
                 BorrowId = a.BorrowId,
                 bookCopyId = a.bookId,
+                borrowerAddress = a.borrowerAddress,
+                borrowerName = a.borrowerName,
+                phoneNumber = a.phoneNumber,
                 BorrowDate = a.BorrowDate,
                 ReturnDate = a.ReturnDate
             }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
