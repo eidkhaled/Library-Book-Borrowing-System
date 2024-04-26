@@ -66,7 +66,7 @@ namespace LibraryBookBorrowingSystem.Controllers
         {
             var Check = await _categoryRepository.DeleteCategoryById(CategoryId);
             if (Check)
-                return Ok("Deleted Successfuly");
+                return Ok(true);
             return BadRequest("can,t Delete");
 
         }
