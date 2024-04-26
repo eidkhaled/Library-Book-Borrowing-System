@@ -10,7 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IBookCopyRepository, CopyRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Books_Progect"));
@@ -22,6 +21,6 @@ if (true/*app.Environment.IsDevelopment()*/)
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader());
 app.MapControllers();
 app.Run();

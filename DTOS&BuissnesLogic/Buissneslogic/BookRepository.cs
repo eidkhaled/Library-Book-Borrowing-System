@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,14 +30,12 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 Description = Model.Description,
                 ISBN = Model.ISBN,
                 Title = Model.Title,
-                PublicationYear = Model.PublicationYear.Value
-                ,CategoryId=Model.CategoryID
+                PublicationYear = Model.PublicationYear,
+                TotalCopies = Model.TotalCopies
                 
             };
               _dbContext.Books.AddAsync(book);
              await _dbContext.SaveChangesAsync();
-            Model.BookID = book.BookID;
-            Model.CategoryName = book.Category?.CategoryName;
             return Model;
        }    
         public async Task<Book?> GetBookById(int BookId)
@@ -58,12 +57,18 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         
         public async Task<viewModelForBook> UpdateBookById(int BookId, viewModelForBook Model)
         {
+
             var book=  _dbContext.Books.FirstOrDefault(b=>b.BookID==BookId);
+            var active = CountActiveBorrowRecords(BookId);
+            if (active != 0 && (Model.TotalCopies - active <0))
+            {
+                throw new Exception("Invalid count: Active borrow records exceed total copies available.");
+            }
             book.ISBN=Model.ISBN;
-            
             book.Description=Model.Description;
             book.Title=Model.Title;
             book.CategoryId=Model.CategoryID;
+            book.TotalCopies=Model.TotalCopies;
              _dbContext.Books.Update(book);
             await _dbContext.SaveChangesAsync();
             return Model;
@@ -76,6 +81,17 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             _dbContext.Books.Remove(book);
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+    
+
+        public int CountActiveBorrowRecords(int bookId)
+        {
+            var book = _dbContext.Books.Include(b => b.BorrowingRecords).SingleOrDefault(b => b.BookID == bookId);
+
+            if (book == null)
+                return 0;
+
+            return book.BorrowingRecords?.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now) ?? 0;
         }
     }
 }

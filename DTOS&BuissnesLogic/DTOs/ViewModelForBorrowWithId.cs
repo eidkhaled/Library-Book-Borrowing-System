@@ -13,6 +13,6 @@ namespace DTOS_BuissnesLogic.DTOs
         public int bookCopyId { get; set; }   
         public DateTime BorrowDate { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime ReturnDate { get; set; } = DateTime.MinValue;
+        public DateTime? ReturnDate { get; set; } = DateTime.MinValue;
     }
 }

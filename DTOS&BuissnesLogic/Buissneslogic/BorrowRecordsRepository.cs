@@ -22,20 +22,16 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         public async Task<ViewModelForBorrow> AddNewBorrowingRecord(ViewModelForBorrow Model)
         {
             if (Model == null) return null;
-            //Model.bookCopy.NumberOfCopies -= 1;
-            var a=_dbContext.BookCopies.FirstOrDefault(a => a.CopyId == Model.bookCopyId);
-            if (a.NumberOfCopies >= 1)
+            var a=_dbContext.Books.FirstOrDefault(a => a.BookID == Model.bookCopyId);
+            var AvailableCopies = CalculateAvailableCopies(Model.bookCopyId);
+            if (AvailableCopies >= 1)
             {
                 BorrowingRecords borrowingRecords = new BorrowingRecords()
                 {
-                    bookCopyId = Model.bookCopyId,
+                    bookId = Model.bookCopyId,
                     BorrowDate = DateTime.Now,
-                    DueDate = DateTime.Now,
-                    ReturnDate = Model.ReturnDate,
                 };
                 await _dbContext.BorrowingRecords.AddAsync(borrowingRecords);
-                a.NumberOfCopies -= 1;
-                if (a.NumberOfCopies == 0) { a.Status = StatusAvailable.NotAvailable.ToString(); }
                 await _dbContext.SaveChangesAsync();
                 return Model;
 
@@ -46,7 +42,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         
 
-        public async Task<bool> DeleteBorrowingRecordById(int BorrowingRecordId)
+/*        public async Task<bool> DeleteBorrowingRecordById(int BorrowingRecordId)
         {
             var BorrowRecord = _dbContext.BorrowingRecords.FirstOrDefault(b => b.BorrowId== BorrowingRecordId);
             if (BorrowRecord != null)
@@ -57,7 +53,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             }
 
             return false;
-        }
+        }*/
 
         
 
@@ -67,9 +63,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 Select(a=>new ViewModelForBorrowWithId
                 {
                     BorrowId = a.BorrowId,
-                    bookCopyId = a.bookCopyId,
+                    bookCopyId = a.bookId,
                     BorrowDate = a.BorrowDate,
-                    DueDate = a.DueDate,
                     ReturnDate = a.ReturnDate
                 }).ToListAsync();
             return BorrowingRecords;
@@ -79,8 +74,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         public async Task<ViewModelForBorrowWithId> GetBorrowingRecordById(int BorrowingRecordId)
         {
             var BorrowingRecord = _dbContext.BorrowingRecords.Select(a=>new ViewModelForBorrowWithId
-            {BorrowId=a.BorrowId, bookCopyId = a.bookCopyId, BorrowDate = a.BorrowDate,
-                DueDate = a.DueDate, ReturnDate = a.ReturnDate }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
+            {BorrowId=a.BorrowId, bookCopyId = a.bookId, BorrowDate = a.BorrowDate,
+                 ReturnDate = a.ReturnDate }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
             if (BorrowingRecord != null) { return BorrowingRecord; }
             return null;
         }
@@ -89,32 +84,52 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<ViewModelForBorrowWithId> UpdateBorrowingRecordById(int BorrowingRecordId, ViewModelForBorrow Model)
         {
-            var BorrowingRecord = _dbContext.BorrowingRecords.Include(a=>a.bookCopy).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
-            var NofBorrows = _dbContext.BookCopies./*Include(a=>a.bookCopy).*/FirstOrDefault(b => b.CopyId == Model.bookCopyId);
+            var BorrowingRecord = _dbContext.BorrowingRecords.Include(a=>a.book).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
+            var book = _dbContext.Books.FirstOrDefault(b => b.BookID == Model.bookCopyId);
             
-            if (BorrowingRecord != null&& NofBorrows.NumberOfCopies >= 1)
+            if(BorrowingRecord == null || Model.ReturnDate!=null ? Model.ReturnDate > DateTime.Now : false)
             {
-
-                BorrowingRecord.BorrowDate=Model.BorrowDate;
-                BorrowingRecord.DueDate=Model.DueDate;
-                BorrowingRecord.ReturnDate=Model.ReturnDate;
-                BorrowingRecord.bookCopyId=Model.bookCopyId; 
-                _dbContext.BorrowingRecords.Update(BorrowingRecord);
-                _dbContext.SaveChanges();
-                var BorrowingRecordReturn = _dbContext.BorrowingRecords.Select(a => new ViewModelForBorrowWithId
-                {
-                    BorrowId = a.BorrowId,
-                    bookCopyId = a.bookCopyId,
-                    BorrowDate = a.BorrowDate,
-                    DueDate = a.DueDate,
-                    ReturnDate = a.ReturnDate
-                }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
-                return BorrowingRecordReturn;
-
+                throw new Exception("not valid!");
             }
-            return null;
+            if (BorrowingRecord.ReturnDate != null && BorrowingRecord.ReturnDate < DateTime.Now && Model.ReturnDate == null && CalculateAvailableCopies(book.BookID) < 1)
+            {
+                throw new Exception("Invalid count: Active borrow records exceed total copies available.");
+            }
+
+            BorrowingRecord.BorrowDate=Model.BorrowDate;
+            BorrowingRecord.ReturnDate=Model.ReturnDate;
+            BorrowingRecord.bookId =Model.bookCopyId; 
+            _dbContext.BorrowingRecords.Update(BorrowingRecord);
+            _dbContext.SaveChanges();
+            var BorrowingRecordReturn = _dbContext.BorrowingRecords.Select(a => new ViewModelForBorrowWithId
+            {
+                BorrowId = a.BorrowId,
+                bookCopyId = a.bookId,
+                BorrowDate = a.BorrowDate,
+                ReturnDate = a.ReturnDate
+            }).FirstOrDefault(b => b.BorrowId == BorrowingRecordId);
+            return BorrowingRecordReturn;
+            
+        }
+        public int CalculateAvailableCopies(int bookId)
+        {
+            var book = _dbContext.Books.Include(b => b.BorrowingRecords).SingleOrDefault(b => b.BookID == bookId);
+
+            if (book == null || book.TotalCopies == null)
+                return 0;
+
+            int activeLoans = book.BorrowingRecords?.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now) ?? 0;
+            return book.TotalCopies.Value - activeLoans;
+        }
+        public int CountActiveBorrowRecords(int bookId)
+        {
+            var book = _dbContext.Books.Include(b => b.BorrowingRecords).SingleOrDefault(b => b.BookID == bookId);
+
+            if (book == null)
+                return 0;
+
+            return book.BorrowingRecords?.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now) ?? 0;
         }
 
-        
     }
 }

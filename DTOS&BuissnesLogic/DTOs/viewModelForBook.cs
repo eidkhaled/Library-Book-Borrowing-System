@@ -9,14 +9,16 @@ namespace DTOS_BuissnesLogic.DTOs
 {
     public class viewModelForBook
     {
-        public int? BookID { get; set; }
+        public int BookID { get; set; }
 
-        public string? Title { get; set; } = "";
-        public string? Description { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
         [Required]
-        public string? ISBN { get; set; } = "";
+        public string ISBN { get; set; } = "";
         public int? CategoryID { get; set; }
-        public string? CategoryName { get; set; }
+        public int? TotalCopies { get; set; }
+
+        public string CategoryName { get; set; }
         public DateTime? PublicationYear { get; set; }
     }
 }

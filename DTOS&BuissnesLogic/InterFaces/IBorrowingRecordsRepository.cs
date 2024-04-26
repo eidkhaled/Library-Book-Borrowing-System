@@ -14,6 +14,6 @@ namespace DTOS_BuissnesLogic.InterFaces
         Task<ViewModelForBorrowWithId> GetBorrowingRecordById(int BorrowingRecordId);
         Task<IEnumerable<ViewModelForBorrowWithId>> GetAllBorrowingRecords();
         Task<ViewModelForBorrowWithId> UpdateBorrowingRecordById(int BorrowingRecordId, ViewModelForBorrow Model);
-        Task<bool> DeleteBorrowingRecordById(int BorrowingRecordId);
-    }
+/*        Task<bool> DeleteBorrowingRecordById(int BorrowingRecordId);
+*/    }
 }

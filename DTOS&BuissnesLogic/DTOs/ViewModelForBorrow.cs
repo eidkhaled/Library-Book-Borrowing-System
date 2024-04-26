@@ -9,9 +9,11 @@ namespace DTOS_BuissnesLogic.DTOs
 {
     public class ViewModelForBorrow
     {
-        public int bookCopyId { get; set; }   
+        public int bookCopyId { get; set; }
+        public string? borrowerName { get; set; }
+        public string? borrowerAddress { get; set; }
+        public string? phoneNumber { get; set; }
         public DateTime BorrowDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime ReturnDate { get; set; } = DateTime.MinValue;
+        public DateTime? ReturnDate { get; set; } 
     }
 }
