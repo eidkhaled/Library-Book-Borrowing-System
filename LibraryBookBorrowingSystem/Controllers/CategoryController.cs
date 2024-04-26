@@ -44,11 +44,11 @@ namespace LibraryBookBorrowingSystem.Controllers
 
         }
         [HttpPut]
-        public async Task<ActionResult<ViewModelForCategory>> UpdateBook(int CategoryId, ViewModelForCategory ViewModelForCategory)
+        public async Task<ActionResult<ViewModelForCategory>> UpdateBook(int BookId, ViewModelForCategory ViewModelForCategory)
         {
             if (ModelState.IsValid)
             {
-                var EditedCategory = await _categoryRepository.UpdateCategoryById(CategoryId, ViewModelForCategory);
+                var EditedCategory = await _categoryRepository.UpdateCategoryById(BookId, ViewModelForCategory);
                 return Ok(EditedCategory);
 
             }
@@ -62,7 +62,7 @@ namespace LibraryBookBorrowingSystem.Controllers
 
         }
         [HttpDelete("{CategoryId}")]
-        public async Task<ActionResult<bool>> DeleteBook(int CategoryId)
+        public async Task<ActionResult> DeleteBook(int CategoryId)
         {
             var Check = await _categoryRepository.DeleteCategoryById(CategoryId);
             if (Check)

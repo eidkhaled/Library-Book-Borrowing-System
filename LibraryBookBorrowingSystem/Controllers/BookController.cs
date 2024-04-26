@@ -63,12 +63,12 @@ namespace LibraryBookBorrowingSystem.Controllers
 
         }
         [HttpDelete("{BookId}")]
-        public async Task<ActionResult<bool>> DeleteBook(int BookId)
+        public async Task<ActionResult> DeleteBook(int BookId)
         {
             var Check = await _bookRepository.DeleteBookById(BookId);
             if(Check)
-            return Ok(true);
-            return Ok(false);
+            return Ok("Deleted Successfuly");
+            return BadRequest("can,t Delete");
 
         }
 
