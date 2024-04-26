@@ -29,6 +29,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 BorrowingRecords borrowingRecords = new BorrowingRecords()
                 {
                     bookId = Model.bookCopyId,
+                    borrowerAddress=Model.borrowerAddress,
+                    borrowerName=Model.borrowerName,
+                    phoneNumber=Model.phoneNumber,
                     BorrowDate = DateTime.Now,
                 };
                 await _dbContext.BorrowingRecords.AddAsync(borrowingRecords);
