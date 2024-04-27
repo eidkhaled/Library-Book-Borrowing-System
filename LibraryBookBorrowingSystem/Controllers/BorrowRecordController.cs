@@ -64,7 +64,7 @@ namespace LibraryBookBorrowingSystem.Controllers
                     BadRequest("Can,t update");
             }
         }
-        [HttpDelete("{BorrowId}")]
+    /*    [HttpDelete("{BorrowId}")]
         public async Task<ActionResult<bool>> DeleteCoby(int BorrowId)
         {
             var Check = await _borrowingRecordsRepository.DeleteBorrowingRecordById(BorrowId);
@@ -72,7 +72,7 @@ namespace LibraryBookBorrowingSystem.Controllers
                 return Ok("Deleted Successfuly");
             return BadRequest("can,t Delete");
 
-        }
+        }*/
 
 
     }

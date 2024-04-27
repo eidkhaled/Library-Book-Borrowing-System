@@ -31,11 +31,13 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 ISBN = Model.ISBN,
                 Title = Model.Title,
                 PublicationYear = Model.PublicationYear,
-                TotalCopies = Model.TotalCopies
+                TotalCopies = Model.TotalCopies,
+                CategoryId = Model.CategoryId
                 
             };
               _dbContext.Books.AddAsync(book);
              await _dbContext.SaveChangesAsync();
+            Model.BookID = book.BookID;
             return Model;
        }    
         public async Task<Book?> GetBookById(int BookId)
@@ -49,7 +51,15 @@ namespace DTOS_BuissnesLogic.Buissneslogic
         {
             
             var Books = await _dbContext.Books.
-                Select(a => new viewModelForBook {BookID=a.BookID,CategoryID=a.CategoryId,CategoryName= a.Category != null ? a.Category.CategoryName : null, Title =a.Title, Description = a.Description, ISBN = a.ISBN , PublicationYear=a.PublicationYear }).
+                Select(a => new viewModelForBook {
+                    BookID=a.BookID,
+                    CategoryId = a.CategoryId,
+                    CategoryName= a.Category != null ? a.Category.CategoryName : null,
+                    Title =a.Title,
+                    Description = a.Description,
+                    ISBN = a.ISBN ,
+                    TotalCopies=a.TotalCopies,
+                    PublicationYear=a.PublicationYear }).
                 ToListAsync();
             
             return Books;
@@ -67,7 +77,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             book.ISBN=Model.ISBN;
             book.Description=Model.Description;
             book.Title=Model.Title;
-            book.CategoryId=Model.CategoryID;
+            book.CategoryId=Model.CategoryId;
             book.TotalCopies=Model.TotalCopies;
              _dbContext.Books.Update(book);
             await _dbContext.SaveChangesAsync();

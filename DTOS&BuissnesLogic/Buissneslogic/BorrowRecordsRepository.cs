@@ -62,11 +62,12 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<IEnumerable<ViewModelForBorrowWithId>> GetAllBorrowingRecords()
         {
-            var BorrowingRecords = await _dbContext.BorrowingRecords.
+            var BorrowingRecords = await _dbContext.BorrowingRecords.Include(x=>x.book).
                 Select(a=>new ViewModelForBorrowWithId
                 {
                     BorrowId = a.BorrowId,
                     bookCopyId = a.bookId,
+                    bookName=a.book.Title,
                     borrowerAddress = a.borrowerAddress,
                     borrowerName = a.borrowerName,
                     phoneNumber = a.phoneNumber,

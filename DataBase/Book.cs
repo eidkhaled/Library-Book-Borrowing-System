@@ -13,6 +13,7 @@ namespace DataBase
         public string? ISBN { get; set; } = "";
         public DateTime? PublicationYear { get; set; }
         public int? CategoryId { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Total copies must be greater than 0.")]
         public int? TotalCopies { get; set; }
         public Category? Category { get; set; }
         public ICollection<BookAuthor>? Author { get; set; }

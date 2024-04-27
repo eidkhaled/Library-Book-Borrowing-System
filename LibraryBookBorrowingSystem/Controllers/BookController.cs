@@ -22,7 +22,7 @@ namespace LibraryBookBorrowingSystem.Controllers
             if(ModelState.IsValid)
             {
                 var book= await _bookRepository.AddNewBook(Model);
-                return Ok(Model);
+                return Ok(book);
             }
             return BadRequest(Model);
         }
