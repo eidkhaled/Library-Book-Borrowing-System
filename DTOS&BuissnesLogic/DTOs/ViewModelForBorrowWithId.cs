@@ -9,8 +9,8 @@ namespace DTOS_BuissnesLogic.DTOs
 {
     public class ViewModelForBorrowWithId
     {
-        public int BorrowId { get; set; }
-        public int bookCopyId { get; set; }
+        public int borrowId { get; set; }
+        public int bookId { get; set; }
 
         public string? borrowerName { get; set; }
         public string? bookName { get; set; }

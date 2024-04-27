@@ -10,7 +10,7 @@ namespace DataBase
     public class BorrowingRecords
     {
         [Key]
-        public int BorrowId { get; set; }
+        public int borrowId { get; set; }
         public int bookId {  get; set;}
         public string? borrowerName { get; set; }
         public string? borrowerAddress { get; set; }
