@@ -106,7 +106,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 throw new Exception("Invalid count: Active borrow records exceed total copies available.");
             }
 
-            BorrowingRecord.BorrowDate=Model.BorrowDate;
+            BorrowingRecord.BorrowDate=Model.BorrowDate.Value;
             BorrowingRecord.ReturnDate=Model.ReturnDate;
             BorrowingRecord.borrowerAddress = Model.borrowerAddress;
             BorrowingRecord.borrowerName = Model.borrowerName;
