@@ -28,7 +28,7 @@ namespace LibraryBookBorrowingSystem.Controllers
                 {
                     return Ok(book);
                 }
-                return BadRequest("can't add");
+                return BadRequest("make sure that total count is more than or equal the borrowed books count");
             }
             return BadRequest("can't add");
         }
