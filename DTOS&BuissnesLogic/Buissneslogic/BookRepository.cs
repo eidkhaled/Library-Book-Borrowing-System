@@ -86,8 +86,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<bool> DeleteBookById(int BookId)
         {
-            var book = _dbContext.Books.FirstOrDefault(b => b.BookID == BookId);
-            if (book==null)  return false;
+            var book = _dbContext.Books.Include(x=>x.BorrowingRecords).FirstOrDefault(b => b.BookID == BookId);
+            if (book==null || book.BorrowingRecords.Count>0)  return false;
+
             _dbContext.Books.Remove(book);
             await _dbContext.SaveChangesAsync();
             return true;
