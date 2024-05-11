@@ -23,6 +23,7 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             if (Model == null) return new ViewModelForCategory();
             Category category = new Category()
             {
+                CategoryId = Model.CategoryId,
                 CategoryName = Model.CategoryName
 /*                ParentCategoryId = Model.ParentCategoryId
 */            };
@@ -35,8 +36,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
         public async Task<bool> DeleteCategoryById(int CategoryId)
         {
-            var category = _dbContext.Categories.FirstOrDefault(b => b.CategoryId == CategoryId);
-            if (category != null)
+            var category = _dbContext.Categories.Include(x=>x.Books).FirstOrDefault(b => b.CategoryId == CategoryId);
+            if (category != null && category.Books.Count ==0)
             {
                 _dbContext.Categories.Remove(category);
                 await _dbContext.SaveChangesAsync();
