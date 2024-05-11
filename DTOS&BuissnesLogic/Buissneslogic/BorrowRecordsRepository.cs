@@ -92,26 +92,28 @@ namespace DTOS_BuissnesLogic.Buissneslogic
 
        
 
-        public async Task<ViewModelForBorrowWithId> UpdateBorrowingRecordById(int BorrowingRecordId, ViewModelForBorrow Model)
+        public async Task<ViewModelForBorrowWithId> ReturnBorrowingRecordById(int BorrowingRecordId/*, ViewModelForBorrow Model*/)
         {
             var BorrowingRecord = _dbContext.BorrowingRecords.Include(a=>a.book).FirstOrDefault(b => b.borrowId == BorrowingRecordId);
-            var book = _dbContext.Books.FirstOrDefault(b => b.BookID == Model.bookId);
-            
-            if(BorrowingRecord == null || Model.ReturnDate!=null ? Model.ReturnDate > DateTime.Now : false)
+/*            var book = _dbContext.Books.FirstOrDefault(b => b.BookID == Model.bookId);
+*/            
+            if(BorrowingRecord == null /*|| Model.ReturnDate!=null ? Model.ReturnDate > DateTime.Now : false*/)
             {
                 throw new Exception("not valid!");
             }
-            if (BorrowingRecord.ReturnDate != null && BorrowingRecord.ReturnDate < DateTime.Now && Model.ReturnDate == null && CalculateAvailableCopies(book.BookID) < 1)
+            var availble = CalculateAvailableCopies(BorrowingRecord.bookId);
+            if (/*BorrowingRecord.ReturnDate != null && BorrowingRecord.ReturnDate < DateTime.Now && Model.ReturnDate == null &&*/ availble < 0)
             {
-                throw new Exception("Invalid count: Active borrow records exceed total copies available.");
+                throw new Exception($"Invalid count: Active borrow records plus availble books exceed total copies of this book {BorrowingRecordId} : by {Math.Abs(availble)}.");
             }
 
-            BorrowingRecord.BorrowDate=Model.BorrowDate.Value;
-            BorrowingRecord.ReturnDate=Model.ReturnDate;
-            BorrowingRecord.borrowerAddress = Model.borrowerAddress;
+            /*            BorrowingRecord.BorrowDate=Model.BorrowDate.Value;
+            */
+            BorrowingRecord.ReturnDate=DateTime.Now;
+     /*       BorrowingRecord.borrowerAddress = Model.borrowerAddress;
             BorrowingRecord.borrowerName = Model.borrowerName;
             BorrowingRecord.phoneNumber = Model.phoneNumber;
-            BorrowingRecord.bookId =Model.bookId; 
+            BorrowingRecord.bookId =Model.bookId; */
             _dbContext.BorrowingRecords.Update(BorrowingRecord);
             _dbContext.SaveChanges();
             var BorrowingRecordReturn = _dbContext.BorrowingRecords.Select(a => new ViewModelForBorrowWithId

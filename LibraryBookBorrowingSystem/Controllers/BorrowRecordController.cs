@@ -50,11 +50,11 @@ namespace LibraryBookBorrowingSystem.Controllers
             return Ok(Borrow);
         }
         [HttpPut("{BorrowId}")]
-        public async Task<ActionResult<ViewModelForBorrow>> UpdateBook(int BorrowId, ViewModelForBorrow viewModelForCopy)
+        public async Task<ActionResult<ViewModelForBorrow>> UpdateBook(int BorrowId)
         {
             if (ModelState.IsValid)
             {
-                var EditedBorrow = await _borrowingRecordsRepository.UpdateBorrowingRecordById(BorrowId, viewModelForCopy);
+                var EditedBorrow = await _borrowingRecordsRepository.ReturnBorrowingRecordById(BorrowId);
                 return Ok(EditedBorrow);
 
             }

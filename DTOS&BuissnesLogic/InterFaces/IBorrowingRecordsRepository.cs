@@ -13,7 +13,7 @@ namespace DTOS_BuissnesLogic.InterFaces
         Task<ViewModelForBorrow> AddNewBorrowingRecord(ViewModelForBorrow Model);
         Task<ViewModelForBorrowWithId> GetBorrowingRecordById(int BorrowingRecordId);
         Task<IEnumerable<ViewModelForBorrowWithId>> GetAllBorrowingRecords();
-        Task<ViewModelForBorrowWithId> UpdateBorrowingRecordById(int BorrowingRecordId, ViewModelForBorrow Model);
+        Task<ViewModelForBorrowWithId> ReturnBorrowingRecordById(int BorrowingRecordId/*, ViewModelForBorrow Model*/);
 /*        Task<bool> DeleteBorrowingRecordById(int BorrowingRecordId);
 */    }
 }
