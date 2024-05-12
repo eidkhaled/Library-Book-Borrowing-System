@@ -11,9 +11,9 @@ namespace DTOS_BuissnesLogic.DTOs
     {
         public int? borrowId { get; set; }
         public int bookId { get; set; }
-        public string? borrowerName { get; set; }
-        public string? borrowerAddress { get; set; }
-        public string? phoneNumber { get; set; }
+        public string borrowerName { get; set; }
+        public string borrowerAddress { get; set; }
+        public string phoneNumber { get; set; }
         public DateTime? BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; } 
     }

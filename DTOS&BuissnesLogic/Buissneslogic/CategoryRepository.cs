@@ -23,8 +23,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             if (Model == null) return new ViewModelForCategory();
             Category category = new Category()
             {
-                CategoryId = Model.CategoryId,
-                CategoryName = Model.CategoryName
+/*                CategoryId = Model.CategoryId,
+*/                CategoryName = Model.CategoryName
 /*                ParentCategoryId = Model.ParentCategoryId
 */            };
             await _dbContext.Categories.AddAsync(category);
