@@ -60,8 +60,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                     ISBN = a.ISBN ,
                     TotalCopies=a.TotalCopies,
                     PublicationYear=a.PublicationYear ,
-                    AvailbleCopies = a.TotalCopies - CountActiveBorrowRecords(a.BookID),
-                    ActiveCopies=a.TotalCopies
+                    AvailbleCopies = a.TotalCopies - a.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now),
+                    ActiveCopies = a.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now)
 
                 }).
                 ToListAsync();
@@ -85,6 +85,9 @@ namespace DTOS_BuissnesLogic.Buissneslogic
             book.TotalCopies=Model.TotalCopies;
              _dbContext.Books.Update(book);
             await _dbContext.SaveChangesAsync();
+
+            Model.ActiveCopies = book.TotalCopies - book.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now);
+            Model.AvailbleCopies = book.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now);
             return Model;
         }
 

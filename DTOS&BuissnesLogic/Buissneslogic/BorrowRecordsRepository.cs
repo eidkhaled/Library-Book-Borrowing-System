@@ -36,6 +36,8 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                 };
                 await _dbContext.BorrowingRecords.AddAsync(borrowingRecords);
                 await _dbContext.SaveChangesAsync();
+                Model.ActiveCopies = a.TotalCopies - a.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now);
+                Model.AvailbleCopies = a.BorrowingRecords.Count(br => br.ReturnDate == null || br.ReturnDate > DateTime.Now);
                 return Model;
 
             }

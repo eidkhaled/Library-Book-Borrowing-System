@@ -14,6 +14,8 @@ namespace DTOS_BuissnesLogic.DTOs
         public string borrowerName { get; set; }
         public string borrowerAddress { get; set; }
         public string phoneNumber { get; set; }
+        public int? AvailbleCopies { get; set; }
+        public int? ActiveCopies { get; set; }
         public DateTime? BorrowDate { get; set; }
         public DateTime? ReturnDate { get; set; } 
     }
