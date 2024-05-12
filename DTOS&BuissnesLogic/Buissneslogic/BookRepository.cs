@@ -59,7 +59,11 @@ namespace DTOS_BuissnesLogic.Buissneslogic
                     Description = a.Description,
                     ISBN = a.ISBN ,
                     TotalCopies=a.TotalCopies,
-                    PublicationYear=a.PublicationYear }).
+                    PublicationYear=a.PublicationYear ,
+                    AvailbleCopies = a.TotalCopies - CountActiveBorrowRecords(a.BookID),
+                    ActiveCopies=a.TotalCopies
+
+                }).
                 ToListAsync();
             
             return Books;
